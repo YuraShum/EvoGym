@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import Navbar from './components/Navbar'
+import { navLinkLabels, NavLinks } from './config/config'
+import Home from './components/Page/Home/Home'
+import Benefits from './components/Page/Benefits/Benefits'
+import Classes from './components/Page/Classes/Classes'
+import ContactUs from './components/Page/ContactUs/ContactUs'
+import Footer from './components/Page/Footer/Footer'
+import GlobalContextProvider from './components/ContextProvider/GlobalContextProvider'
 
-function App() {
+const App = () => {
+
+
+  const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true)
+
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        setIsTopOfPage(true)
+      } else {
+        setIsTopOfPage(false)
+      }
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <GlobalContextProvider>
+      <div className='app bg-gray-20 '>
+        <Navbar isTopOfPage={isTopOfPage} />
+        <Home/>
+        <Benefits/>
+        <Classes/>
+        <ContactUs/>
+        <Footer />
+      </div>
+    </GlobalContextProvider>
+  )
 }
 
-export default App;
+export default App
